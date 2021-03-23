@@ -19,11 +19,21 @@ module "vm_instance_template_minion" {
     # Create apt sources list file
     echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/ubuntu/18.04/amd64/latest bionic main" | sudo tee /etc/apt/sources.list.d/salt.list
     sudo apt-get update
-    sudo apt-get install -y salt-minion
+    sudo apt-get install -y salt-minion python3-pip
+    pip3 install pyinotify
     echo master: salt-master-001 | sudo tee /etc/salt/minion.d/minion.conf 
     echo id: $(hostname -s) | sudo tee -a /etc/salt/minion.d/minion.conf 
+    sudo tee -a /etc/salt/minion.d/minion.conf  > /dev/null <<EOT
+beacons:
+  inotify:
+    - files:
+        /var/log/tomcat9: 
+          mask:
+            - modify
+          recurse: True
+EOT
     sudo systemctl enable salt-minion
-    sudo systemctl start salt-minion
+    sudo systemctl restart salt-minion
   EOF
 }
 
