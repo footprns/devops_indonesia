@@ -20,13 +20,18 @@ module "vm_instance_template_master" {
     echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/ubuntu/18.04/amd64/latest bionic main" | sudo tee /etc/apt/sources.list.d/salt.list
     sudo apt-get update
     sudo apt-get install -y salt-master
+    sudo mkdir /srv/salt
     sudo tee /etc/salt/master.d/master.conf > /dev/null <<EOT
 fileserver_backend:
   - gitfs
+  - roots
 gitfs_remotes:
   - https://github.com/saltstack-formulas/apache-formula
   - https://github.com/saltstack-formulas/memcached-formula
   - https://github.com/saltstack-formulas/tomcat-formula
+file_roots:
+  base:
+    - /srv/salt
 EOT
     sudo apt-get install -y python-pygit2 python-git
     sudo systemctl enable salt-master
