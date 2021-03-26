@@ -26,13 +26,15 @@ fileserver_backend:
   - gitfs
   - roots
 gitfs_remotes:
-  - https://github.com/saltstack-formulas/apache-formula
-  - https://github.com/saltstack-formulas/memcached-formula
-  - https://github.com/saltstack-formulas/tomcat-formula
   - https://github.com/footprns/devops_indonesia.git
 file_roots:
   base:
     - /srv/salt
+EOT
+  sudo tee /etc/salt/master.d/reactor.conf > /dev/null <<EOT
+reactor:
+  - 'salt/minion/*/start':
+      - /srv/salt/reactor/start.sls
 EOT
     sudo apt-get install -y python-pygit2 python-git
     sudo systemctl enable salt-master

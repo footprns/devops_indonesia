@@ -11,4 +11,4 @@ sudo salt salt-minion-001 grains.items
 echo role: devops_indonesia | sudo tee -a /etc/salt/grains && sudo systemctl restart salt-minion
 sudo salt salt-minion-001 grains.get role
 
-sudo salt salt-minion-001 state.sls 
+sudo salt salt-minion-001 state.sls devops_indonesia.devops-formula test=True
