@@ -29,6 +29,7 @@ gitfs_remotes:
   - https://github.com/saltstack-formulas/apache-formula
   - https://github.com/saltstack-formulas/memcached-formula
   - https://github.com/saltstack-formulas/tomcat-formula
+  - https://github.com/footprns/devops_indonesia.git
 file_roots:
   base:
     - /srv/salt
