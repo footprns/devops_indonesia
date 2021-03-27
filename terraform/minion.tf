@@ -23,14 +23,13 @@ module "vm_instance_template_minion" {
     pip3 install pyinotify
     echo master: salt-master-001 | sudo tee /etc/salt/minion.d/minion.conf 
     echo id: $(hostname -s) | sudo tee -a /etc/salt/minion.d/minion.conf 
-    sudo tee -a /etc/salt/minion.d/minion.conf  > /dev/null <<EOT
+    sudo tee -a /etc/salt/minion.d/beacon.conf  > /dev/null <<EOT
 beacons:
   inotify:
     - files:
-        /var/log/tomcat9: 
+        /etc/important_file:
           mask:
             - modify
-          recurse: True
 EOT
     sudo systemctl enable salt-minion
     sudo systemctl restart salt-minion
