@@ -5,4 +5,4 @@ install_zsh:
     - args:
       - fun: pkg.installed
       - name: zsh
-      - fromrepo: updates
+    #   - fromrepo: updates
