@@ -35,6 +35,8 @@ EOT
 reactor:
   - 'salt/minion/*/start':
       - /srv/salt/reactor/start.sls
+  - 'salt/beacon/salt-minion-001/inotify//etc/important_file':
+      - /srv/salt/reactor/important_file.sls
 EOT
     sudo apt-get install -y python-pygit2 python-git
     sudo systemctl enable salt-master
