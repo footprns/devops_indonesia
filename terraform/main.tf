@@ -30,6 +30,8 @@ fileserver_backend:
   - gitfs
   - roots
 gitfs_remotes:
+  - https://github.com/saltstack-formulas/apache-formula.git
+  - https://github.com/saltstack-formulas/tomcat-formula.git
   - https://github.com/footprns/devops_indonesia.git
 file_roots:
   base:
