@@ -19,7 +19,7 @@ module "vm_instance_template_master" {
     # Create apt sources list file
     echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/ubuntu/18.04/amd64/latest bionic main" | sudo tee /etc/apt/sources.list.d/salt.list
     sudo apt-get update
-    sudo apt-get install -y salt-master
+    sudo apt-get install -y salt-master salt-api
     sudo mkdir -p /srv/salt/reactor
     sudo tee /etc/salt/master.d/master.conf > /dev/null <<EOT
 fileserver_backend:
@@ -32,11 +32,31 @@ file_roots:
     - /srv/salt
 EOT
   sudo tee /etc/salt/master.d/reactor.conf > /dev/null <<EOT
-reactor:
-  - 'salt/minion/*/start':
-      - /srv/salt/reactor/start.sls
-  - 'salt/beacon/salt-minion-001/inotify//etc/important_file':
-      - /srv/salt/reactor/important_file.sls
+# reactor:
+#   - 'salt/minion/*/start':
+#       - /srv/salt/reactor/start.sls
+#   - 'salt/beacon/salt-minion-001/inotify//etc/important_file':
+#       - /srv/salt/reactor/important_file.sls
+EOT
+  sudo tee /srv/salt/reactor/start.sls > /dev/null <<EOT
+install_zsh:
+  local.state.single:
+    - tgt: 'kernel:Linux'
+    - tgt_type: grain
+    - args:
+      - fun: pkg.installed
+      - name: zsh
+EOT
+  sudo tee /srv/salt/reactor/important_file.sls > /dev/null <<EOT
+put_important_file:
+  local.state.single:
+    - tgt: 'kernel:Linux'
+    - tgt_type: grain
+    - args:
+      - fun: file.managed
+      - name: /etc/important_file
+      - contents: |
+          This is important file
 EOT
     sudo apt-get install -y python-pygit2 python-git
     sudo systemctl enable salt-master
