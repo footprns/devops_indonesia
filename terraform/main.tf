@@ -19,8 +19,12 @@ module "vm_instance_template_master" {
     # Create apt sources list file
     echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/ubuntu/18.04/amd64/latest bionic main" | sudo tee /etc/apt/sources.list.d/salt.list
     sudo apt-get update
-    sudo apt-get install -y salt-master salt-api
+    sudo apt-get install -y salt-master salt-api python3-pip
+    pip3 install cherrypy
     sudo mkdir -p /srv/salt/reactor
+    # install salt-api
+    pip3 install cherrypy
+    sudo salt-call --local tls.create_self_signed_cert
     sudo tee /etc/salt/master.d/master.conf > /dev/null <<EOT
 fileserver_backend:
   - gitfs
@@ -37,6 +41,20 @@ EOT
 #       - /srv/salt/reactor/start.sls
 #   - 'salt/beacon/salt-minion-001/inotify//etc/important_file':
 #       - /srv/salt/reactor/important_file.sls
+EOT
+  sudo tee /etc/salt/master.d/salt-api.conf > /dev/null <<EOT
+rest_cherrypy:
+  port: 8000
+  ssl_crt: /etc/pki/tls/certs/localhost.crt
+  ssl_key: /etc/pki/tls/certs/localhost.key
+external_auth:
+  pam:
+    thatch:
+      - 'web*':
+        - test.*
+        - network.*
+    saltdev:
+      - .*
 EOT
   sudo tee /srv/salt/reactor/start.sls > /dev/null <<EOT
 install_zsh:
@@ -61,6 +79,8 @@ EOT
     sudo apt-get install -y python-pygit2 python-git
     sudo systemctl enable salt-master
     sudo systemctl restart salt-master
+    sudo systemctl enable salt-api
+    sudo systemctl restart salt-api
   EOF
 }
 

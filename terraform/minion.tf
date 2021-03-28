@@ -21,7 +21,7 @@ module "vm_instance_template_minion" {
     sudo apt-get update
     sudo apt-get install -y salt-minion python3-pip
     pip3 install pyinotify
-    echo master: salt-master-001 | sudo tee /etc/salt/minion.d/minion.conf 
+    echo master: salt-master-001.asia-southeast2-a.c.jago-sre-gcp-poc.internal | sudo tee /etc/salt/minion.d/minion.conf 
     echo id: $(hostname -s) | sudo tee -a /etc/salt/minion.d/minion.conf 
     sudo tee -a /etc/salt/minion.d/beacon.conf  > /dev/null <<EOT
 beacons:

@@ -4,6 +4,8 @@ Sharing Knowledge
 
 gcloud beta compute ssh --zone "asia-southeast2-a" "salt-master-001" --tunnel-through-iap --project "jago-sre-gcp-poc"
 gcloud beta compute ssh --zone "asia-southeast2-a" "salt-minion-001" --tunnel-through-iap --project "jago-sre-gcp-poc"
+gcloud beta compute ssh --zone "asia-southeast2-b" "salt-minion-002" --tunnel-through-iap --project "jago-sre-gcp-poc"
+
 
 # Command
 ## SaltStack Architecture
@@ -37,4 +39,22 @@ sudo vi /etc/important_file
 sudo cat /etc/important_file
 
 # Salt Orchestration
+sudo salt-key -L
+sudo salt-run state.orch orch.timestamp
+ls -la /tmp/timestamp.txt
 
+# Salt API
+sudo useradd saltdev
+sudo passwd saltdev
+curl -sSk https://localhost:8000/login \
+    -H 'Accept: application/x-yaml' \
+    -d username=saltdev \
+    -d password=saltdev \
+    -d eauth=pam
+
+curl -sSk https://localhost:8000 \
+    -H 'Accept: application/x-yaml' \
+    -H 'X-Auth-Token: 2cceff677b76d4b668653bae4055ee471547c2d7'\
+    -d client=local \
+    -d tgt='*' \
+    -d fun=test.ping
