@@ -5,6 +5,7 @@ Sharing Knowledge
 gcloud beta compute ssh --zone "asia-southeast2-a" "salt-master-001" --tunnel-through-iap --project "jago-sre-gcp-poc"
 gcloud beta compute ssh --zone "asia-southeast2-a" "salt-minion-001" --tunnel-through-iap --project "jago-sre-gcp-poc"
 gcloud beta compute ssh --zone "asia-southeast2-b" "salt-minion-002" --tunnel-through-iap --project "jago-sre-gcp-poc"
+gcloud beta compute ssh --zone "asia-southeast2-a" "salt-proxy-001" --tunnel-through-iap --project "jago-sre-gcp-poc"
 
 
 # Command
@@ -54,7 +55,14 @@ curl -sSk https://localhost:8000/login \
 
 curl -sSk https://localhost:8000 \
     -H 'Accept: application/x-yaml' \
-    -H 'X-Auth-Token: 2cceff677b76d4b668653bae4055ee471547c2d7'\
+    -H 'X-Auth-Token: ea86798a780e33bb1d11ad03ca472df6cfb44a16'\
     -d client=local \
     -d tgt='*' \
     -d fun=test.ping
+
+## Salt Proxy
+https://github.com/saltstack/salt-contrib
+https://github.com/napalm-automation/napalm-salt
+
+sudo salt-proxy --proxyid=p8000 -l debug
+https://docs.saltproject.io/en/latest/topics/proxyminion/index.html

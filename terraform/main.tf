@@ -22,6 +22,7 @@ module "vm_instance_template_master" {
     sudo apt-get install -y salt-master salt-api python3-pip
     pip3 install cherrypy
     sudo mkdir -p /srv/salt/reactor
+    sudo mkdir -p /srv/salt/pillar
     # install salt-api
     pip3 install cherrypy
     sudo salt-call --local tls.create_self_signed_cert
@@ -77,6 +78,16 @@ put_important_file:
       - name: /etc/important_file
       - contents: |
           This is important file
+EOT
+    sudo tee /srv/salt/pillar/top.sls  > /dev/null <<EOT
+base:
+  'p8000':
+      - p8000
+EOT
+    sudo tee /srv/salt/pillar/p8000.sls  > /dev/null <<EOT
+proxy:
+   proxytype: rest_sample
+   url: http://127.0.0.1:8000
 EOT
     sudo apt-get install -y python-pygit2 python-git
     sudo systemctl enable salt-master
