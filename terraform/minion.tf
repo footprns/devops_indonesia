@@ -41,7 +41,7 @@ module "vm_compute_instance_minion" {
   source  = "terraform-google-modules/vm/google//modules/compute_instance"
   version = "6.2.0"
   # insert the 2 required variables here
-  num_instances = 1
+  num_instances = 2
   instance_template = module.vm_instance_template_minion.self_link
   region = "asia-southeast2"
   hostname          = "salt-minion"

@@ -14,7 +14,7 @@ sudo systemctl status salt-minion
 sudo salt-run state.event pretty=True
 
 ## Key based authentication
-sudo salt-key -L
+gcloud beta compute ssh --zone "asia-southeast2-a" "salt-master-001" --tunnel-through-iap --project "jago-sre-gcp-poc"
 
 ## Salt Grains
 sudo salt salt-minion-001 grains.items
@@ -31,3 +31,10 @@ No demo
 ## Salt Reactor
 sudo vi /etc/salt/master.d/reactor.conf 
 sudo systemctl restart salt-minion
+
+# Salt Beacon
+sudo vi /etc/important_file
+sudo cat /etc/important_file
+
+# Salt Orchestration
+
