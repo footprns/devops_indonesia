@@ -19,13 +19,18 @@ module "vm_instance_template_proxy" {
     # Create apt sources list file
     echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/ubuntu/18.04/amd64/latest bionic main" | sudo tee /etc/apt/sources.list.d/salt.list
     sudo apt-get update
-    sudo apt-get install -y salt-minion=2017.7.4+dfsg1-1ubuntu18.04.2 salt-common=2017.7.4+dfsg1-1ubuntu18.04.2 salt-proxy python3-pip
+    sudo apt-get install -y salt-minion=2017.7.4+dfsg1-1ubuntu18.04.2 salt-common=2017.7.4+dfsg1-1ubuntu18.04.2 salt-proxy python3-pip w3m
     pip3 install bottle
     cd /tmp
     git clone https://github.com/saltstack/salt-contrib.git
     cd /tmp/salt-contrib/proxyminion_rest_example
     sudo mkdir -p /etc/salt/proxy.d
+    sudo mkdir -p /etc/salt/minion.d
     echo master: salt-master-001.asia-southeast2-a.c.jago-sre-gcp-poc.internal | sudo tee /etc/salt/proxy.d/proxy.conf 
+    echo master: salt-master-001.asia-southeast2-a.c.jago-sre-gcp-poc.internal | sudo tee /etc/salt/minion.d/minion.conf 
+    echo id: $(hostname -s) | sudo tee -a /etc/salt/minion.d/minion.conf
+    sudo systemctl enable salt-minion
+    sudo systemctl restart salt-minion
     python3 rest.py &
   EOF
 }

@@ -52,10 +52,6 @@ rest_cherrypy:
   ssl_key: /etc/pki/tls/certs/localhost.key
 external_auth:
   pam:
-    thatch:
-      - 'web*':
-        - test.*
-        - network.*
     saltdev:
       - .*
 EOT
@@ -79,12 +75,14 @@ put_important_file:
       - contents: |
           This is important file
 EOT
-    sudo tee /srv/salt/pillar/top.sls  > /dev/null <<EOT
+    sudo tee /srv/pillar/top.sls  > /dev/null <<EOT
 base:
   'p8000':
       - p8000
+  'salt-proxy-001':
+      - p8000
 EOT
-    sudo tee /srv/salt/pillar/p8000.sls  > /dev/null <<EOT
+    sudo tee /srv/pillar/p8000.sls  > /dev/null <<EOT
 proxy:
    proxytype: rest_sample
    url: http://127.0.0.1:8000

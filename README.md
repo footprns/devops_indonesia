@@ -18,6 +18,7 @@ sudo salt-run state.event pretty=True
 
 ## Key based authentication
 gcloud beta compute ssh --zone "asia-southeast2-a" "salt-master-001" --tunnel-through-iap --project "jago-sre-gcp-poc"
+sudo salt-key -L
 
 ## Salt Grains
 sudo salt salt-minion-001 grains.items
@@ -66,3 +67,7 @@ https://github.com/napalm-automation/napalm-salt
 
 sudo salt-proxy --proxyid=p8000 -l debug
 https://docs.saltproject.io/en/latest/topics/proxyminion/index.html
+
+w3m http://127.0.0.1:8000/
+sudo salt p8000 service.start apache
+sudo salt p8000 pkg.install svc-patch1
