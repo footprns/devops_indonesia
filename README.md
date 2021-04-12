@@ -56,9 +56,9 @@ curl -sSk https://localhost:8000/login \
     -d password=saltdev \
     -d eauth=pam
 
-curl -sSk https://localhost:8000 \
+curl -sSk https://localhost:8000 \  
     -H 'Accept: application/x-yaml' \
-    -H 'X-Auth-Token: ea86798a780e33bb1d11ad03ca472df6cfb44a16'\
+    -H 'X-Auth-Token: 9dadb468298c7863f0005cd9bfc93c521667d9f9'\
     -d client=local \
     -d tgt='*' \
     -d fun=test.ping
