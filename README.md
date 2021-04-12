@@ -27,13 +27,15 @@ sudo salt salt-minion-001 grains.get role
 
 ## Salt State
 ls -la /tmp/appendfile.txt
-sudo salt salt-minion-001 state.sls state.firststate test=True
+sudo salt salt-minion-001 state.sls state.firststate
 
 ## Salt Returner
 No demo
 
 ## Salt Reactor
 sudo vi /etc/salt/master.d/reactor.conf 
+sudo systemctl restart salt-master
+sudo salt-run state.event pretty=True
 sudo systemctl restart salt-minion
 
 # Salt Beacon
